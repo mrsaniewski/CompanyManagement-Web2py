@@ -1,0 +1,49 @@
+{{extend 'layout.html'}}
+<style>
+      .bg-teal { background: orange; color:white;}
+  .bg-teal:focus { background: green; }
+</style>
+ {{if auth.user:}}
+<h1>Witaj {{=user.first_name}} {{=user.last_name}}!</h1>
+{{for point in db(db.point.user_id==user.id).select():}}
+<h2>Liczba Twoich punktów: {{=point.points}}</h2>
+{{pass}}
+
+<p>Twój email: {{=user.email}}</p>
+<h2>Loyality</h2>
+
+<h2 align="center">Prizes:</h2>
+
+<ul class="list-group list-group-flush">
+
+{{for prize in db(db.prize.user_id==user.id).select():}}
+      <li class="list-group-item">
+
+<div class = "title">{{=prize.name}}</div>
+    <br />
+<p>{{=prize.valu}}</p>
+    <br />
+    <td>
+        {{if prize.claimed:}}
+        <span class="label label-success">Claimed</span>
+        {{else:}}
+        <form method="post" action="{{=URL('default', 'toggle_prize')}}">
+            <input type="hidden" name="prize_id" value="{{=prize.id}}" />
+               <div align="right">
+            <button type="submit"  class="bg-teal">Pick up</button>
+               </div>
+        </form>
+        {{pass}}
+    </td>
+      </li>
+{{pass}}
+</ul>
+<br />
+<br />
+{{else:}}
+<h1>Loyality
+</h1>
+<p>
+   Zaloguj się lub zarejestruj jeśli chcesz korzystać z naszego serwisu.
+</p>
+{{pass}}

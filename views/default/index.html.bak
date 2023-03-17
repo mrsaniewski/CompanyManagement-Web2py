@@ -1,0 +1,15 @@
+{{extend 'layout.html'}}
+ {{if auth.user:}}
+<h1>Witaj {{=user.first_name}} {{=user.last_name}}!</h1>
+
+<p>Twój email: {{=user.email}}</p>
+
+
+<h2>Sprawdz swoje taski:</h2>
+    <p><a href="{{=URL('default', 'tasks')}}">Kliknij tutaj</a></p>
+{{else:}}
+<h1>
+    Witaj w naszej aplikacji
+</h1>
+
+{{pass}}

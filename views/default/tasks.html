@@ -1,0 +1,75 @@
+{{extend 'layout.html'}}
+
+<style>
+    .icon-trash {
+        background-image: url('{{=URL('static', 'images/trash.png')}}');
+        width: 16px;
+        height: 16px;
+        display: inline-block;
+        margin-right: 5px;
+    }
+        .task-status {
+        margin-left: 10px;
+    }
+      .bg-teal { background: orange; color:white;}
+  .bg-teal:focus { background: green; }
+  .title{font-weight: bold;}
+  .sayhi{font-weight: bold; font-size: 30px;}
+  .points{font-size: 25px;}
+</style>
+
+
+{{if auth.user:}}
+<h1>Witaj {{=user.first_name}}!</h1>
+{{for point in db(db.point.user_id==user.id).select():}}
+<h2>Liczba Twoich punktów: {{=point.points}}</h2>
+{{pass}}
+
+<br /><br /><br />
+<h2 align="center">Twoje taski:</h2>
+
+<h2 align="center">Tasks:</h2>
+
+<ul class="list-group list-group-flush">
+
+{{for task in db(db.task.user_id==user.id).select():}}
+      <li class="list-group-item">
+
+<div class = "title">{{=task.title}}</div>
+    <br />
+<p>{{=task.description}}</p>
+    <br />
+          <p>Dodano:  {{=task.created_time}}</p>
+    <td>
+        {{if task.completed:}}
+        <span class="label label-success">Completed</span>
+        {{else:}}
+        <form method="post" action="{{=URL('default', 'toggle_task')}}">
+            <input type="hidden" name="task_id" value="{{=task.id}}" />
+               <div align="right">
+            <button type="submit"  class="bg-teal">Done</button>
+               </div>
+        </form>
+        {{pass}}
+    </td>
+              <div align="right">
+
+<a href="{{=URL('delete_task', args=[task.id])}}" onclick="return confirm('Are you sure you want to delete this task?');">
+      <span aria-hidden="true">&times;</span>
+
+    <i class="close"></i> Delete</a>
+              </div>
+      </li>
+{{pass}}
+</ul>
+<br />
+<br />
+
+<h2 align="center">Add Task</h2>
+
+{{=form}}
+
+{{else:}}
+<h1>Tasks</h1>
+<p>Zaloguj się lub zarejestruj jeśli chcesz korzystać z naszego serwisu.</p>
+{{pass}}

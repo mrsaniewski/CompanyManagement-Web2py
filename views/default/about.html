@@ -1,0 +1,13 @@
+{{extend 'layout.html'}}
+{{if auth.user:}}
+    <h1>Witaj {{=user.first_name}}!</h1>
+    <h1>O nas!</h1>
+<p>
+   Informacje na temat aplikacji.
+</p>
+ {{else:}}
+<h1> O nas </h1>
+<p>
+   Informacje na temat aplikacji.
+</p>
+{{pass}}
